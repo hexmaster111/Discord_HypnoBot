@@ -10,6 +10,7 @@
         <PackageReference Include="NetCord" Version="1.0.0-alpha.443" />
         <PackageReference Include="NetCord.Hosting" Version="1.0.0-alpha.443" />
         <PackageReference Include="NetCord.Hosting.Services" Version="1.0.0-alpha.443" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.5-beta1" />
     </ItemGroup>
     <ItemGroup>
         <None Update="DISCORD_TOKEN.txt">
