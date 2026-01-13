@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 
 cd "$(dirname "$0")"
-/home/hailey/.dotnet/dotnet run⏎
+/home/hailey/.dotnet/dotnet run
