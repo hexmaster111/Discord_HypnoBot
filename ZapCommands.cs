@@ -150,7 +150,7 @@ public class ZapCommands :
         if (PiShockCreds.Creeds.TryGetValue(who.Id, out var psc))
         {
             hadOneAtleast = true;
-            var res = await PavLocApi.SendPavStim(kind, power, why, token);
+            var res = await PiShockApi.SendPiShockStim(kind, power, 1, psc);
             if (!res.IsSuccessStatusCode)
             {
                 hadError = true;
