@@ -4,7 +4,9 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-public static class ZapTokens
+namespace HypnoBot;
+
+public static class PavCreds
 {
     public static ConcurrentDictionary<ulong, string> UserAuthTokens = new();
 

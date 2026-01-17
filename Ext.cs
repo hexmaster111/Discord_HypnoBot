@@ -1,12 +1,14 @@
 ﻿using System;
 
+namespace HypnoBot;
+
 public static class Ext
 {
-    public static string ToApiString(this PavStimulesKind sk) => sk switch
+    public static string ToApiString(this StimKind sk) => sk switch
     {
-        PavStimulesKind.Zap => "zap",
-        PavStimulesKind.Buzz => "vibe",
-        PavStimulesKind.Beep => "beep",
+        StimKind.Zap => "zap",
+        StimKind.Buzz => "vibe",
+        StimKind.Beep => "beep",
         _ => throw new ArgumentOutOfRangeException(nameof(sk), sk, null)
     };
 }

@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using NetCord;
 using NetCord.Services.ApplicationCommands;
 
+namespace HypnoBot;
+
 public class HypnoCommands :
     ApplicationCommandModule<ApplicationCommandContext>
 {
