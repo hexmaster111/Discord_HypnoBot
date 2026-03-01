@@ -1,4 +1,7 @@
-﻿/DISCORD_TOKEN.txt
+﻿DISCORD_TOKEN.txt
 /bin
 /obj
 /.idea
+UserPerms.txt
+UserSecrets.txt
+UserTimeZone.txt

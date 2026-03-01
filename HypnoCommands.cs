@@ -13,7 +13,7 @@ public class HypnoCommands :
         [
             InteractionContextType.DMChannel, InteractionContextType.Guild, InteractionContextType.BotDMChannel
         ])]
-    public async Task<string> StartTheMantra()
+    public string StartTheMantra()
     {
         string[] mantras =
         [
