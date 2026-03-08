@@ -90,6 +90,8 @@ public static class StimPermsStorage
 
     public static bool IsAllowedTo(ulong attacker, ulong victem, StimKind what)
     {
+        if (attacker == victem) return true;
+
         var perms = GetOrCreatePermFor(attacker, victem);
 
         return what switch

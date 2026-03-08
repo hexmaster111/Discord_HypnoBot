@@ -128,6 +128,17 @@ public class ZapCommands :
         return "Token Saved";
     }
 
+    [SlashCommand("set_zap_max", "set your max zap tolerance for both pi shock and pavloc",
+        Contexts =
+        [
+            InteractionContextType.DMChannel, InteractionContextType.Guild, InteractionContextType.BotDMChannel
+        ])]
+    public async Task<string> SetZapMax(int maxPower)
+    {
+        ZapMaxStorage.UpsertMaxZap(Context.User.Id, maxPower);
+        return "Task Complete.";
+    }
+
 
     // handles choosing the API to zap with, and getting the api tokens for it
     public async Task<string> SendStim(StimKind kind, string? why, int power, User who)
@@ -171,6 +182,12 @@ public class ZapCommands :
     }
 
 
+    static int Map(int x, int inMin, int inMax, int outMin, int outMax)
+    {
+        return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+    }
+
+
     [SlashCommand("zap", "zap a user",
         Contexts =
         [
@@ -182,6 +199,10 @@ public class ZapCommands :
         {
             return NoPermsError(who, Context.User, StimKind.Zap);
         }
+
+        var maxZap = ZapMaxStorage.GetMaxZap(who.Id);
+
+        power = Map(power, 0, 100, 0, maxZap);
 
         return await SendStim(StimKind.Zap, why, power, who);
     }

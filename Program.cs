@@ -15,6 +15,7 @@ internal class Program
         PiShockCreds.Load();
         StimPermsStorage.Load();
         TimeZoneDataStorage.Load();
+        ZapMaxStorage.Load();
 
         var token = File.ReadAllText("DISCORD_TOKEN.txt");
 

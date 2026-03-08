@@ -15,6 +15,9 @@ public class VcGameCommands : ApplicationCommandModule<ApplicationCommandContext
     [SlashCommand("mute_everyone_in_call_with_me", "mutes everyone in call (including you)", Contexts = [InteractionContextType.Guild])]
     public async Task<string> MuteAllInCall()
     {
+
+        if (Context.User.Id != 339541537690222612) return "You are not my mom.";
+        
         var guildId = Context.Interaction.GuildId!.Value;
         var userId = Context.User.Id;
 
@@ -40,6 +43,9 @@ public class VcGameCommands : ApplicationCommandModule<ApplicationCommandContext
     [SlashCommand("unmute_everyone_in_call_with_me", "unmutes everyone in call (including you)", Contexts = [InteractionContextType.Guild])]
     public async Task<string> UnMuteAllInCall()
     {
+        if (Context.User.Id != 339541537690222612) return "You are not my mom.";
+        
+        
         var guildId = Context.Interaction.GuildId!.Value;
         var userId = Context.User.Id;
 
