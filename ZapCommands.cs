@@ -8,8 +8,8 @@ namespace HypnoBot;
 public class ZapCommands :
     ApplicationCommandModule<ApplicationCommandContext>
 {
-    public static string NoTokenError(User who) =>
-        $"{who} needs to dm this bot there token from here https://pavlok.readme.io/reference/intro/getting-started or there pi shock data";
+    public static string NoTokenError(ulong who) =>
+        $"<@{who}> needs to dm this bot there token from here https://pavlok.readme.io/reference/intro/getting-started or there pi shock data";
 
     public static string NoPermsError(User victum, User inflicter, StimKind kind) =>
         $"{inflicter} hasnt been allowed to {kind} {victum}.\n{victum} must run /allow_{kind} {inflicter}";
@@ -141,13 +141,13 @@ public class ZapCommands :
 
 
     // handles choosing the API to zap with, and getting the api tokens for it
-    public async Task<string> SendStim(StimKind kind, string? why, int power, User who)
+    public static async Task<string> SendStim(StimKind kind, string? why, int power, ulong who)
     {
         bool hadOneAtleast = false;
         bool hadError = false;
         string errorMsg = "";
 
-        if (PavCreds.UserAuthTokens.TryGetValue(who.Id, out string token))
+        if (PavCreds.UserAuthTokens.TryGetValue(who, out string token))
         {
             hadOneAtleast = true;
             var res = await PavLocApi.SendPavStim(kind, power, why, token);
@@ -158,7 +158,7 @@ public class ZapCommands :
             }
         }
 
-        if (PiShockCreds.Creeds.TryGetValue(who.Id, out var psc))
+        if (PiShockCreds.Creeds.TryGetValue(who, out var psc))
         {
             hadOneAtleast = true;
             var res = await PiShockApi.SendPiShockStim(kind, power, 1, psc);
@@ -182,7 +182,7 @@ public class ZapCommands :
     }
 
 
-    static int Map(int x, int inMin, int inMax, int outMin, int outMax)
+    public static int Map(int x, int inMin, int inMax, int outMin, int outMax)
     {
         return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
     }
@@ -204,7 +204,7 @@ public class ZapCommands :
 
         power = Map(power, 0, 100, 0, maxZap);
 
-        return await SendStim(StimKind.Zap, why, power, who);
+        return await SendStim(StimKind.Zap, why, power, who.Id);
     }
 
 
@@ -220,7 +220,7 @@ public class ZapCommands :
             return NoPermsError(who, Context.User, StimKind.Buzz);
         }
 
-        return await SendStim(StimKind.Buzz, why, power, who);
+        return await SendStim(StimKind.Buzz, why, power, who.Id);
     }
 
     [SlashCommand("beep", "Buzz a user",
@@ -233,6 +233,6 @@ public class ZapCommands :
         if (!StimPermsStorage.IsAllowedTo(Context.User.Id, who.Id, StimKind.Beep))
             return NoPermsError(who, Context.User, StimKind.Beep);
 
-        return await SendStim(StimKind.Beep, why, power, who);
+        return await SendStim(StimKind.Beep, why, power, who.Id);
     }
 }
