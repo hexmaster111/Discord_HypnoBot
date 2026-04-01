@@ -83,11 +83,12 @@ internal class Program
         }
 
         await ZapCommands.SendStim(StimKind.Buzz, why, power, who);
+        await message.ReplyAsync("Task Complete");
     }
 
     private static async Task ZapHandler(GatewayClient client, Message message)
     {
-       if (!TryParseWearableCommand(message.Content, out var who, out var power, out var why))
+        if (!TryParseWearableCommand(message.Content, out var who, out var power, out var why))
         {
             await message.ReplyAsync("Oopse i need <userid> <level> <message>");
             return;
@@ -104,5 +105,7 @@ internal class Program
         power = ZapCommands.Map(power, 0, 100, 0, maxZap);
 
         await ZapCommands.SendStim(StimKind.Zap, why, power, who);
+        await message.ReplyAsync("Task Complete");
+ 
     }
 }
