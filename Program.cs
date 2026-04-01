@@ -72,7 +72,7 @@ internal class Program
     {
         if (!TryParseWearableCommand(message.Content, out var who, out var power, out var why))
         {
-            await message.ReplyAsync("Oopse i need <userid> <level> <message>");
+            await message.ReplyAsync("Oopse i need <@USERID> <level> <message>");
             return;
         }
 
@@ -90,7 +90,7 @@ internal class Program
     {
         if (!TryParseWearableCommand(message.Content, out var who, out var power, out var why))
         {
-            await message.ReplyAsync("Oopse i need <userid> <level> <message>");
+            await message.ReplyAsync("Oopse i need <@USERID> <level> <message>");
             return;
         }
 
