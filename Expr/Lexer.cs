@@ -101,7 +101,7 @@ public class Lexer
         }
 
         if (found) return ret;
-        throw new Exception("Invalid token");
+        throw new Exception($"Invalid token near {vss.Current}");
     }
 
     public Lexer(string expr)

@@ -55,29 +55,29 @@ public static class CompExpr
             {
                 case CompExprOp.Op.Plus:
                 {
-                    var a = stack.Pop();
                     var b = stack.Pop();
+                    var a = stack.Pop();
                     stack.Push(a + b);
                     break;
                 }
                 case CompExprOp.Op.Minus:
                 {
-                    var a = stack.Pop();
                     var b = stack.Pop();
+                    var a = stack.Pop();
                     stack.Push(a - b);
                     break;
                 }
                 case CompExprOp.Op.Mul:
                 {
-                    var a = stack.Pop();
                     var b = stack.Pop();
+                    var a = stack.Pop();
                     stack.Push(a * b);
                     break;
                 }
                 case CompExprOp.Op.Div:
                 {
-                    var a = stack.Pop();
                     var b = stack.Pop();
+                    var a = stack.Pop();
                     stack.Push(a / b);
                     break;
                 }

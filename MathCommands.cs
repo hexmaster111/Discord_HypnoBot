@@ -37,7 +37,7 @@ public class MathCommands : ApplicationCommandModule<ApplicationCommandContext>
         }
         catch (Exception ex)
         {
-            return $"Oopse: {ex.Message}";
+            return $"Oopse: {ex.Message} in expression {expression}";
         }
     }
 
