@@ -27,7 +27,7 @@ public class MathCommands : ApplicationCommandModule<ApplicationCommandContext>
                 for (var i = 0; i < comp.Ops.Count; i++)
                 {
                     var c = comp.Ops[i];
-                    dieRes.AppendLine($"{i} :{c.ToString()}");
+                    dieRes.AppendLine($"{i}: {c.ToString()}");
                 }
 
                 dieRes.AppendLine("```");
