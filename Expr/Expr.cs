@@ -30,10 +30,10 @@ public struct CompExprOp
     {
         return Kind switch
         {
-            Op.Plus => $"+",
-            Op.Minus => $"-",
-            Op.Mul => $"*",
-            Op.Div => $"/",
+            Op.Plus => $"(ADD)",
+            Op.Minus => $"(SUB)",
+            Op.Mul => $"(MUL)",
+            Op.Div => $"(DIV)",
             Op.PushNumber => $"PUSH {Number}",
             Op.PushDiceRoll => $"ROLL AND PUSH {Roll}",
             _ => throw new ArgumentOutOfRangeException()
