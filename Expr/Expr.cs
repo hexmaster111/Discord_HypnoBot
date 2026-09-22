@@ -19,13 +19,26 @@ public struct CompExprOp
         Div,
 
         PushNumber,
-        PushCell,
         PushDiceRoll
     }
 
     public Op Kind;
     public double Number;
     public Roll Roll;
+
+    public override string ToString()
+    {
+        return Kind switch
+        {
+            Op.Plus => $"+ {Number}",
+            Op.Minus => $"- {Number}",
+            Op.Mul => $"* {Number}",
+            Op.Div => $"/ {Number}",
+            Op.PushNumber => $"PUSH {Number}",
+            Op.PushDiceRoll => $"ROLL AND PUSH {Roll}",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
 }
 
 public static class CompExpr

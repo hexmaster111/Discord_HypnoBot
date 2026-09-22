@@ -12,13 +12,22 @@ public class MathCommands : ApplicationCommandModule<ApplicationCommandContext>
         [
             InteractionContextType.DMChannel, InteractionContextType.Guild, InteractionContextType.BotDMChannel
         ])]
-    public async Task<string> Expr(string expression)
+    public async Task<string> Expr(string expression, bool debug = false)
     {
         try
         {
             var comp = CompExpr.FromString(expression);
             StringBuilder dieRes = new();
             var res = CompExpr.Evaluate(comp, (s) => RollTheDie(s, dieRes));
+
+            if (debug)
+            {
+                dieRes.AppendLine("Steps:");
+                foreach (var c in comp.Ops)
+                {
+                    dieRes.AppendLine($"{c.ToString()}");
+                }
+            }
 
             return $"{expression} -> {res}{(dieRes.Length != 0 ? $"\n{dieRes}" : "")}";
         }
