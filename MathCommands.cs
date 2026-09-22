@@ -24,10 +24,12 @@ public class MathCommands : ApplicationCommandModule<ApplicationCommandContext>
             {
                 dieRes.AppendLine("Steps:");
                 dieRes.AppendLine("```");
-                foreach (var c in comp.Ops)
+                for (var i = 0; i < comp.Ops.Count; i++)
                 {
-                    dieRes.AppendLine($"{c.ToString()}");
+                    var c = comp.Ops[i];
+                    dieRes.AppendLine($"{i} :{c.ToString()}");
                 }
+
                 dieRes.AppendLine("```");
             }
 
