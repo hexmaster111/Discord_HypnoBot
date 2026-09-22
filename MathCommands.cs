@@ -23,10 +23,12 @@ public class MathCommands : ApplicationCommandModule<ApplicationCommandContext>
             if (debug)
             {
                 dieRes.AppendLine("Steps:");
+                dieRes.AppendLine("```");
                 foreach (var c in comp.Ops)
                 {
                     dieRes.AppendLine($"{c.ToString()}");
                 }
+                dieRes.AppendLine("```");
             }
 
             return $"{expression} -> {res}{(dieRes.Length != 0 ? $"\n{dieRes}" : "")}";
