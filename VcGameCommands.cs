@@ -8,8 +8,6 @@ using NetCord;
 using NetCord.Services.ApplicationCommands;
 using Newtonsoft.Json;
 
-
-
 public class VcGameCommands : ApplicationCommandModule<ApplicationCommandContext>
 {
     [SlashCommand("mute_everyone_in_call_with_me", "mutes everyone in call (including you)", Contexts = [InteractionContextType.Guild])]
