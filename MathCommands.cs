@@ -20,7 +20,7 @@ public class MathCommands : ApplicationCommandModule<ApplicationCommandContext>
             StringBuilder dieRes = new();
             var res = CompExpr.Evaluate(comp, (s) => RollTheDie(s, dieRes));
 
-            return $"{expression} -> {res}{(dieRes.Length != 0 ? "\n{dieRes}" : "")}";
+            return $"{expression} -> {res}{(dieRes.Length != 0 ? $"\n{dieRes}" : "")}";
         }
         catch (Exception ex)
         {
