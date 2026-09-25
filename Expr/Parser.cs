@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 namespace HaileysSpreadsheats.Expr;
 
@@ -54,6 +55,16 @@ public class Parser
         };
     }
 
+    private static double GetConstantValue(string text) => text.ToLower(CultureInfo.InvariantCulture) switch
+    {
+        "false" => double.NegativeZero, //hehe any negative is false
+        "true" => 0, // its positive?
+        "pi" => Math.PI,
+        "e" => Math.E,
+        "tau" => Math.Tau,
+        _ => throw new Exception($"Invalid Constant '{text}'")
+    };
+
     private AstNode Nud(Token tk)
     {
         return tk.Kind switch
@@ -61,8 +72,20 @@ public class Parser
             TokenKind.Number => new AstNode() { Kind = TokenKind.Number, Value = tk.NumberValue },
             TokenKind.DiceRoll => new AstNode() { Kind = TokenKind.DiceRoll, Roll = tk.DiceRoll },
             TokenKind.OpenParen => ParseOpenParen(),
+            TokenKind.Constant => new AstNode() { Kind = TokenKind.Constant, Value = GetConstantValue(tk.Text) },
+            TokenKind.FnIdentifier => ParseFnCall(),
             _ => throw new ArgumentOutOfRangeException()
         };
+    }
+
+    private AstNode ParseFnCall()
+    {
+        var inner = Parse(0);
+        var next = _l.Consume();
+        // while next == , parse(0)
+        if (next.Kind != TokenKind.CloseParen) throw new Exception($"Expected ) but got {next.Kind}");        
+        
+        
     }
 
     private AstNode ParseOpenParen()

@@ -32,8 +32,25 @@ public class Lexer
         new() { Handler = HandleSymbMu, Regex = new Regex("\\*", RegexOptions.IgnoreCase) },
         new() { Handler = HandleSymOpenParen, Regex = new Regex(@"\(", RegexOptions.IgnoreCase) },
         new() { Handler = HandleSymCloseParen, Regex = new Regex(@"\)", RegexOptions.IgnoreCase) },
-
+        new() { Handler = HandleFnCall, Regex = new Regex(@"^[a-zA-Z_]+\s*\(") },
+        new() { Handler = HandleIdent, Regex = new Regex(@"^[a-zA-Z_]+") },
     ];
+
+    private static Token HandleFnCall(Lexer l, Match m)
+    {
+        var name = m.Value;
+        
+        // -1 we want the open paren to trigger the group behavior still on the next iteration 
+        l.vss.Read(name.Length - 1);
+        return new Token() { Kind = TokenKind.FnIdentifier, Text = name };
+    }
+
+    private static Token HandleIdent(Lexer l, Match m)
+    {
+        var name = m.Value;
+        l.vss.Read(name.Length);
+        return new Token() { Kind = TokenKind.Constant, Text = name };
+    }
 
     private static Token HandleRandomCellValue(Lexer l, Match m)
     {
@@ -46,7 +63,6 @@ public class Lexer
         };
     }
 
-  
 
     private static Token SkipWhiteSpace(Lexer l, Match m)
     {

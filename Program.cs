@@ -13,8 +13,62 @@ using NetCord.Hosting.Services.ApplicationCommands;
 
 internal class Program
 {
+    private static void RunRepl()
+    {
+        const string Prompt = "> ";
+        string? line = "";
+        bool lexDebug = false;
+
+        Console.Write(Prompt);
+
+        while ((line = Console.ReadLine()) != null)
+        {
+            line = line.Trim();
+            if (line.Length == 0) goto CommandDone;
+            if (line.StartsWith("."))
+            {
+                if (line.Equals(".lex")) lexDebug = !lexDebug;
+                if(line.Equals(".clear")) Console.Clear();
+
+                goto CommandDone;
+            }
+
+            try
+            {
+                Lexer l = new(line);
+
+                if (lexDebug)
+                {
+                    while (l.More()) Console.WriteLine(l.Consume().Kind);
+                    l = new(line);
+                }
+
+                Parser p = new(l);
+                AstNode root = p.GetRoot();
+                Compiler c = new(root);
+
+                var comp = c.Compile();
+                if (comp.error != null) throw new Exception(comp.error);
+                var cExpr = new CompiledExpression(line, comp.output!);
+                var res = CompExpr.Evaluate(cExpr, spec => -1);
+                Console.WriteLine(res);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            CommandDone:
+
+            Console.Write(Prompt);
+        }
+    }
+
     public static async Task Main(string[] args)
     {
+        //Console.WriteLine($"Res {CompExpr.Evaluate(CompExpr.FromString("TRUE"), spec => 1)}");
+        RunRepl();
+
         PavCreds.Load();
         PiShockCreds.Load();
         StimPermsStorage.Load();
@@ -45,7 +99,6 @@ internal class Program
 
             if (message.Content.StartsWith("!buzz ")) await BuzzHandler(client, message);
             if (message.Content.StartsWith("!zap ")) await ZapHandler(client, message);
-
         };
 
 
@@ -107,6 +160,5 @@ internal class Program
 
         await ZapCommands.SendStim(StimKind.Zap, why, power, who);
         await message.ReplyAsync("Task Complete");
- 
     }
 }

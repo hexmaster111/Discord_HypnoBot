@@ -3,6 +3,7 @@ namespace HaileysSpreadsheats.Expr;
 public struct Token
 {
     public double NumberValue;
+    public string Text;
 
     public TokenKind Kind;
     public Roll DiceRoll;
@@ -24,6 +25,9 @@ public enum TokenKind
     OpenParen,
     CloseParen,
 
+    Constant,
+    FnIdentifier,
+    
     SKIP, //used by parts of lexer to communicate
     EOF,
 }

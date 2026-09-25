@@ -41,6 +41,10 @@ public class Compiler(AstNode root)
                 case TokenKind.Div:
                     ret.Add(new CompExprOp { Kind = CompExprOp.Op.Div });
                     break;
+                case TokenKind.Constant:
+                    ret.Add(new CompExprOp(){Kind=CompExprOp.Op.PushNumber, Number = n.Value});
+                    break;
+                
                 default:
                     return (null, "Unknown token kind");
             }

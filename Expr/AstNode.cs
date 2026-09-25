@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace HaileysSpreadsheats.Expr;
 
@@ -14,7 +15,7 @@ public class AstNode
     {
         return Kind switch
         {
-            TokenKind.Number => Value.ToString(),
+            TokenKind.Number => Value.ToString(CultureInfo.InvariantCulture),
             TokenKind.Plus => $"({Left} + {Right})",
             TokenKind.Minus => $"({Left} - {Right})",
             TokenKind.Mul => $"({Left} * {Right})",
