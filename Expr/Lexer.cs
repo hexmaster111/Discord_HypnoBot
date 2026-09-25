@@ -30,6 +30,9 @@ public class Lexer
         new() { Handler = HandleSymbM, Regex = new Regex("-", RegexOptions.IgnoreCase) },
         new() { Handler = HandleSymbD, Regex = new Regex("/", RegexOptions.IgnoreCase) },
         new() { Handler = HandleSymbMu, Regex = new Regex("\\*", RegexOptions.IgnoreCase) },
+        new() { Handler = HandleSymOpenParen, Regex = new Regex(@"\(", RegexOptions.IgnoreCase) },
+        new() { Handler = HandleSymCloseParen, Regex = new Regex(@"\)", RegexOptions.IgnoreCase) },
+
     ];
 
     private static Token HandleRandomCellValue(Lexer l, Match m)
@@ -71,6 +74,8 @@ public class Lexer
     private static Token HandleSymbM(Lexer l, Match m) => HandleSymb(l, m, TokenKind.Minus);
     private static Token HandleSymbD(Lexer l, Match m) => HandleSymb(l, m, TokenKind.Div);
     private static Token HandleSymbMu(Lexer l, Match m) => HandleSymb(l, m, TokenKind.Mul);
+    private static Token HandleSymOpenParen(Lexer l, Match m) => HandleSymb(l, m, TokenKind.OpenParen);
+    private static Token HandleSymCloseParen(Lexer l, Match m) => HandleSymb(l, m, TokenKind.CloseParen);
 
     private static Token HandleSymb(Lexer lexer, Match match, TokenKind tk)
     {

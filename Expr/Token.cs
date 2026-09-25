@@ -20,6 +20,9 @@ public enum TokenKind
     Cell, // A1
     CellRange, // A1:B2
     DiceRoll, // 1d20
+    
+    OpenParen,
+    CloseParen,
 
     SKIP, //used by parts of lexer to communicate
     EOF,

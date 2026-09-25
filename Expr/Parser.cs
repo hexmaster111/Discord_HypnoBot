@@ -16,6 +16,8 @@ public class Parser
         TokenKind.Minus => 2,
         TokenKind.Mul => 3,
         TokenKind.Div => 3,
+        TokenKind.OpenParen => 1,
+        TokenKind.CloseParen => -1,
         TokenKind.SKIP => -1,
         TokenKind.EOF => -1,
         _ => throw new ArgumentOutOfRangeException(nameof(tk), tk, null)
@@ -58,7 +60,16 @@ public class Parser
         {
             TokenKind.Number => new AstNode() { Kind = TokenKind.Number, Value = tk.NumberValue },
             TokenKind.DiceRoll => new AstNode() { Kind = TokenKind.DiceRoll, Roll = tk.DiceRoll },
+            TokenKind.OpenParen => ParseOpenParen(),
             _ => throw new ArgumentOutOfRangeException()
         };
+    }
+
+    private AstNode ParseOpenParen()
+    {
+        var inner = Parse(0);
+        var next = _l.Consume();
+        if (next.Kind != TokenKind.CloseParen) throw new Exception($"Expected ) but got {next.Kind}");
+        return inner;
     }
 }
