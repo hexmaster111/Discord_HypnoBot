@@ -11,17 +11,24 @@ public enum AstNodeKind
     Minus,
     Mul,
     Div,
+    FnCall
 }
 
 public class AstNode
 {
     public AstNodeKind Kind;
 
-    public AstNode Left;
-    public AstNode Right;
+    public AstNode Left = null!;
+    public AstNode Right = null!;
     public double Value;
     public Roll Roll;
+
+    public AstNode Arg = null!;
     public string Name = null!;
+
+    public AstNode()
+    {
+    }
 
     public AstNode(AstNodeKind kind, AstNode left, AstNode right)
     {
@@ -60,4 +67,12 @@ public class AstNode
         TokenKind.Div => new(AstNodeKind.Div, left, right),
         _ => throw new ArgumentOutOfRangeException(nameof(tkKind), $"Unknown tkKind {tkKind}")
     };
+
+    public static AstNode NewFn(string tkText, AstNode inner)
+    {
+        return new AstNode()
+        {
+            Name = tkText, Arg = inner, Kind = AstNodeKind.FnCall
+        };
+    }
 }

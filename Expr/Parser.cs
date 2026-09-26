@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace HaileysSpreadsheats.Expr;
@@ -68,18 +69,21 @@ public class Parser
             TokenKind.DiceRoll => new AstNode(AstNodeKind.DiceRoll, tk.DiceRoll),
             TokenKind.OpenParen => ParseOpenParen(),
             TokenKind.Constant => new AstNode(AstNodeKind.Number, GetConstantValue(tk.Text)),
-            TokenKind.FnIdentifier => ParseFnCall(),
+            TokenKind.FnIdentifier => ParseFnCall(tk),
             _ => throw new ArgumentOutOfRangeException()
         };
     }
 
-    private AstNode ParseFnCall()
+    private AstNode ParseFnCall(Token tk)
     {
+        var open = _l.Consume();
+        Debug.Assert(open.Kind == TokenKind.OpenParen);
+        
         var inner = Parse(0);
-        var next = _l.Consume();
-        // while next == , parse(0)
-        if (next.Kind != TokenKind.CloseParen) throw new Exception($"Expected ) but got {next.Kind}");
-
+       
+        // this will have parsed everything including `)`
+        return AstNode.NewFn(tk.Text, inner);
+        
         throw new NotImplementedException();
     }
 

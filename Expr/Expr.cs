@@ -18,15 +18,18 @@ public struct CompExprOp
         Mul,
         Div,
 
+        Call,
+
         PushNumber,
         PushDiceRoll,
-        
+
         // I think we will need a kind of goto function here to impl if(1,true,false)
     }
 
     public Op Kind;
     public double Number;
     public Roll Roll;
+    public string FnName;
 
     public override string ToString()
     {
@@ -38,6 +41,7 @@ public struct CompExprOp
             Op.Div => $"(DIV)",
             Op.PushNumber => $"PUSH {Number}",
             Op.PushDiceRoll => $"ROLL AND PUSH {Roll}",
+            Op.Call => $"CALL `{FnName}`",
             _ => throw new ArgumentOutOfRangeException()
         };
     }
@@ -45,16 +49,13 @@ public struct CompExprOp
 
 public static class CompExpr
 {
-
     public delegate double RollDelegate(Roll spec);
 
-    public static double Evaluate(CompiledExpression expr,  RollDelegate roll)
+    public static double Evaluate(CompiledExpression expr, RollDelegate roll)
     {
         Stack<double> stack = new();
-        for (var pc = 0; pc < expr.Ops.Count; pc++)
+        foreach (var op in expr.Ops)
         {
-            var op = expr.Ops[pc];
-            
             switch (op.Kind)
             {
                 case CompExprOp.Op.Plus:
@@ -91,13 +92,31 @@ public static class CompExpr
                 case CompExprOp.Op.PushDiceRoll:
                     stack.Push(roll(op.Roll));
                     break;
+
+                case CompExprOp.Op.Call:
+                {
+                    var a = stack.Pop();
+                    stack.Push(CallBuiltin(op.FnName, a));
+                    break;
+                }
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(op.Kind), $"{op.Kind}");
             }
         }
 
         return stack.Pop();
     }
+
+    const double RadToDeg = Math.PI / 180;
+
+
+    private static double CallBuiltin(string fn, double v) => fn.ToLower() switch
+    {
+        "sin" => Math.Sin(v * RadToDeg),
+        "cos" => Math.Cos(v * RadToDeg),
+        "tan" => Math.Tan(v * RadToDeg),
+        _ => throw new ArgumentOutOfRangeException()
+    };
 
     public static CompiledExpression FromString(string expr)
     {
@@ -106,7 +125,6 @@ public static class CompExpr
         AstNode root = p.GetRoot();
         Compiler c = new(root);
         var res = c.Compile();
-        if (res.error != null) throw new Exception(res.error);
-        return new CompiledExpression(expr, res.output!);
+        return new CompiledExpression(expr, res);
     }
 }

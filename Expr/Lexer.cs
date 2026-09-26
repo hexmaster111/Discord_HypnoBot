@@ -21,20 +21,23 @@ public class Lexer
         new()
         {
             Handler = HandleRandomCellValue,
-            Regex = new Regex(@"(?<num>[0-9]+)d(?<sides>[0-9]+)", RegexOptions.IgnoreCase)
+            Regex = new Regex(@"^(?<num>[0-9]+)d(?<sides>[0-9]+)", RegexOptions.IgnoreCase)
         },
-        new() { Handler = HandleNumber, Regex = new Regex("[0-9]+(\\.[0-9]+)?", RegexOptions.IgnoreCase) },
+        new() { Handler = HandleNumber, Regex = new Regex(@"^[\.0-9]+(\.[0-9]+)?", RegexOptions.IgnoreCase) },
         // new() { Handler = HandleCellRange, Regex = new Regex("[A-Z]+[0-9]+:[A-Z]+[0-9]+", RegexOptions.IgnoreCase) }, // A1:B2
-        new() { Handler = SkipWhiteSpace, Regex = new Regex("\\s+", RegexOptions.IgnoreCase) },
-        new() { Handler = HandleSymbP, Regex = new Regex("\\+", RegexOptions.IgnoreCase) },
-        new() { Handler = HandleSymbM, Regex = new Regex("-", RegexOptions.IgnoreCase) },
-        new() { Handler = HandleSymbD, Regex = new Regex("/", RegexOptions.IgnoreCase) },
-        new() { Handler = HandleSymbMu, Regex = new Regex("\\*", RegexOptions.IgnoreCase) },
-        new() { Handler = HandleSymOpenParen, Regex = new Regex(@"\(", RegexOptions.IgnoreCase) },
-        new() { Handler = HandleSymCloseParen, Regex = new Regex(@"\)", RegexOptions.IgnoreCase) },
+        new() { Handler = SkipWhiteSpace, Regex = new Regex("^\\s+", RegexOptions.IgnoreCase) },
+        new() { Handler = HandleSymbP, Regex = new Regex("^\\+", RegexOptions.IgnoreCase) },
+        new() { Handler = HandleSymbM, Regex = new Regex("^-", RegexOptions.IgnoreCase) },
+        new() { Handler = HandleSymbD, Regex = new Regex("^/", RegexOptions.IgnoreCase) },
+        new() { Handler = HandleSymbMu, Regex = new Regex("^\\*", RegexOptions.IgnoreCase) },
+        new() { Handler = HandleSymOpenParen, Regex = new Regex(@"^\(", RegexOptions.IgnoreCase) },
+        new() { Handler = HandleSymCloseParen, Regex = new Regex(@"^\)", RegexOptions.IgnoreCase) },
         new() { Handler = HandleFnCall, Regex = new Regex(@"^[a-zA-Z_]+\s*\(") },
         new() { Handler = HandleIdent, Regex = new Regex(@"^[a-zA-Z_]+") },
+        new() { Handler = HandleCama, Regex = new Regex(@"^,")},
     ];
+
+    private static Token HandleCama(Lexer l, Match m) => HandleSymb(l, m, TokenKind.Cama);
 
     private static Token HandleFnCall(Lexer l, Match m)
     {
@@ -42,7 +45,7 @@ public class Lexer
         
         // -1 we want the open paren to trigger the group behavior still on the next iteration 
         l.vss.Read(name.Length - 1);
-        return new Token() { Kind = TokenKind.FnIdentifier, Text = name };
+        return new Token() { Kind = TokenKind.FnIdentifier, Text = name.Substring(0,name.Length-1) };
     }
 
     private static Token HandleIdent(Lexer l, Match m)

@@ -23,6 +23,7 @@ public enum TokenKind
     
     OpenParen,
     CloseParen,
+    Cama,
 
     Constant,
     FnIdentifier,

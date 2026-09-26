@@ -12,7 +12,7 @@ public class Compiler(AstNode root)
         f(n);
     }
 
-    public (List<CompExprOp>? output, string? error) Compile()
+    public List<CompExprOp> Compile()
     {
         Stack<AstNode> stack = new();
         List<CompExprOp> ret = new();
@@ -41,13 +41,19 @@ public class Compiler(AstNode root)
                 case AstNodeKind.Div:
                     ret.Add(new CompExprOp { Kind = CompExprOp.Op.Div });
                     break;
-                
-                default:
-                    return (null, "Unknown token kind");
+                case AstNodeKind.FnCall:
+                {
+                    ret.Add(new CompExprOp() { Kind = CompExprOp.Op.Call, FnName = n.Name });
+                    var aComp = new Compiler(n.Arg);
+                    var compile = aComp.Compile();
+                    for (int i = compile.Count - 1; i >= 0; i--) ret.AddRange(compile[i]);
+                    break;
+                }
+                default: throw new Exception($"Unknown token {n.Kind}");
             }
         }
 
         ret.Reverse();
-        return (ret, null);
+        return ret;
     }
 }

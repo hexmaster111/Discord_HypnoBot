@@ -49,8 +49,14 @@ internal class Program
                 Compiler c = new(root);
 
                 var comp = c.Compile();
-                if (comp.error != null) throw new Exception(comp.error);
-                var cExpr = new CompiledExpression(line, comp.output!);
+
+                for (var index = 0; index < comp.Count; index++)
+                {
+                    var i = comp[index];
+                    Console.WriteLine($"{index}: {i}");
+                }
+
+                var cExpr = new CompiledExpression(line, comp);
                 var res = CompExpr.Evaluate(cExpr, spec => -1);
                 Console.WriteLine(res);
             }
@@ -67,8 +73,10 @@ internal class Program
 
     public static async Task Main(string[] args)
     {
-        //Console.WriteLine($"Res {CompExpr.Evaluate(CompExpr.FromString("TRUE"), spec => 1)}");
+
+        // Console.WriteLine($"Res {CompExpr.Evaluate(CompExpr.FromString("sin(.5+.25)"), spec => 1)}");
         RunRepl();
+        return;
 
         PavCreds.Load();
         PiShockCreds.Load();
