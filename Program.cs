@@ -74,9 +74,9 @@ internal class Program
     public static async Task Main(string[] args)
     {
 
-        // Console.WriteLine($"Res {CompExpr.Evaluate(CompExpr.FromString("sin(.5+.25)"), spec => 1)}");
-        RunRepl();
-        return;
+        //Console.WriteLine($"Res {CompExpr.Evaluate(CompExpr.FromString("sin(.5+.25)"), spec => 1)}");
+        //RunRepl();
+        //return;
 
         PavCreds.Load();
         PiShockCreds.Load();
