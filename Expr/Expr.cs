@@ -19,7 +19,9 @@ public struct CompExprOp
         Div,
 
         PushNumber,
-        PushDiceRoll
+        PushDiceRoll,
+        
+        // I think we will need a kind of goto function here to impl if(1,true,false)
     }
 
     public Op Kind;
@@ -49,8 +51,10 @@ public static class CompExpr
     public static double Evaluate(CompiledExpression expr,  RollDelegate roll)
     {
         Stack<double> stack = new();
-        foreach (var op in expr.Ops)
+        for (var pc = 0; pc < expr.Ops.Count; pc++)
         {
+            var op = expr.Ops[pc];
+            
             switch (op.Kind)
             {
                 case CompExprOp.Op.Plus:

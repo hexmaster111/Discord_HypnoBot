@@ -23,26 +23,23 @@ public class Compiler(AstNode root)
             var n = stack.Pop();
             switch (n.Kind)
             {
-                case TokenKind.Number:
+                case AstNodeKind.Number:
                     ret.Add(new CompExprOp { Kind = CompExprOp.Op.PushNumber, Number = n.Value });
                     break;
-                case TokenKind.DiceRoll:
+                case AstNodeKind.DiceRoll:
                     ret.Add(new CompExprOp { Kind = CompExprOp.Op.PushDiceRoll, Roll = n.Roll });
                     break;
-                case TokenKind.Plus:
+                case AstNodeKind.Plus:
                     ret.Add(new CompExprOp { Kind = CompExprOp.Op.Plus });
                     break;
-                case TokenKind.Minus:
+                case AstNodeKind.Minus:
                     ret.Add(new CompExprOp { Kind = CompExprOp.Op.Minus });
                     break;
-                case TokenKind.Mul:
+                case AstNodeKind.Mul:
                     ret.Add(new CompExprOp { Kind = CompExprOp.Op.Mul });
                     break;
-                case TokenKind.Div:
+                case AstNodeKind.Div:
                     ret.Add(new CompExprOp { Kind = CompExprOp.Op.Div });
-                    break;
-                case TokenKind.Constant:
-                    ret.Add(new CompExprOp(){Kind=CompExprOp.Op.PushNumber, Number = n.Value});
                     break;
                 
                 default:

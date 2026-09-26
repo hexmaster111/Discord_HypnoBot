@@ -15,6 +15,7 @@ internal class Program
 {
     private static void RunRepl()
     {
+        Console.WriteLine("Repel Starting...");
         const string Prompt = "> ";
         string? line = "";
         bool lexDebug = false;

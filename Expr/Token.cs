@@ -19,7 +19,6 @@ public enum TokenKind
 
     Number, // 123
     Cell, // A1
-    CellRange, // A1:B2
     DiceRoll, // 1d20
     
     OpenParen,

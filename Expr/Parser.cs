@@ -47,12 +47,7 @@ public class Parser
     private AstNode Led(Token tk, AstNode left)
     {
         var right = Parse(LeftBindingPower(tk.Kind));
-        return new AstNode()
-        {
-            Kind = tk.Kind,
-            Left = left,
-            Right = right
-        };
+        return AstNode.CreateFrom(tk.Kind, left, right);
     }
 
     private static double GetConstantValue(string text) => text.ToLower(CultureInfo.InvariantCulture) switch
@@ -69,10 +64,10 @@ public class Parser
     {
         return tk.Kind switch
         {
-            TokenKind.Number => new AstNode() { Kind = TokenKind.Number, Value = tk.NumberValue },
-            TokenKind.DiceRoll => new AstNode() { Kind = TokenKind.DiceRoll, Roll = tk.DiceRoll },
+            TokenKind.Number => new AstNode(AstNodeKind.Number, tk.NumberValue),
+            TokenKind.DiceRoll => new AstNode(AstNodeKind.DiceRoll, tk.DiceRoll),
             TokenKind.OpenParen => ParseOpenParen(),
-            TokenKind.Constant => new AstNode() { Kind = TokenKind.Constant, Value = GetConstantValue(tk.Text) },
+            TokenKind.Constant => new AstNode(AstNodeKind.Number, GetConstantValue(tk.Text)),
             TokenKind.FnIdentifier => ParseFnCall(),
             _ => throw new ArgumentOutOfRangeException()
         };
@@ -83,9 +78,9 @@ public class Parser
         var inner = Parse(0);
         var next = _l.Consume();
         // while next == , parse(0)
-        if (next.Kind != TokenKind.CloseParen) throw new Exception($"Expected ) but got {next.Kind}");        
-        
-        
+        if (next.Kind != TokenKind.CloseParen) throw new Exception($"Expected ) but got {next.Kind}");
+
+        throw new NotImplementedException();
     }
 
     private AstNode ParseOpenParen()
