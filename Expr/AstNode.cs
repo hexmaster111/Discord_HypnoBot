@@ -56,6 +56,7 @@ public class AstNode
         AstNodeKind.Minus => $"({Left} - {Right})",
         AstNodeKind.Mul => $"({Left} * {Right})",
         AstNodeKind.Div => $"({Left} / {Right})",
+        AstNodeKind.FnCall => $"{Name}({Arg})",
         _ => throw new ArgumentOutOfRangeException()
     };
 

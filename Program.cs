@@ -19,6 +19,7 @@ internal class Program
         const string Prompt = "> ";
         string? line = "";
         bool lexDebug = false;
+        bool instDebug = false;
 
         Console.Write(Prompt);
 
@@ -29,7 +30,8 @@ internal class Program
             if (line.StartsWith("."))
             {
                 if (line.Equals(".lex")) lexDebug = !lexDebug;
-                if(line.Equals(".clear")) Console.Clear();
+                if (line.Equals(".inst")) instDebug = !instDebug;
+                if (line.Equals(".clear")) Console.Clear();
 
                 goto CommandDone;
             }
@@ -46,14 +48,21 @@ internal class Program
 
                 Parser p = new(l);
                 AstNode root = p.GetRoot();
+                
+                Console.WriteLine(root);
+                
+                
                 Compiler c = new(root);
 
                 var comp = c.Compile();
 
-                for (var index = 0; index < comp.Count; index++)
+                if (instDebug)
                 {
-                    var i = comp[index];
-                    Console.WriteLine($"{index}: {i}");
+                    for (var index = 0; index < comp.Count; index++)
+                    {
+                        var i = comp[index];
+                        Console.WriteLine($"{index}: {i}");
+                    }
                 }
 
                 var cExpr = new CompiledExpression(line, comp);
@@ -73,10 +82,9 @@ internal class Program
 
     public static async Task Main(string[] args)
     {
-
         //Console.WriteLine($"Res {CompExpr.Evaluate(CompExpr.FromString("sin(.5+.25)"), spec => 1)}");
-        //RunRepl();
-        //return;
+        RunRepl();
+        return;
 
         PavCreds.Load();
         PiShockCreds.Load();

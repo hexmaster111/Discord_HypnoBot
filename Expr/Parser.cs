@@ -83,8 +83,6 @@ public class Parser
        
         // this will have parsed everything including `)`
         return AstNode.NewFn(tk.Text, inner);
-        
-        throw new NotImplementedException();
     }
 
     private AstNode ParseOpenParen()
